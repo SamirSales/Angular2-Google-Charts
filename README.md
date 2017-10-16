@@ -19,12 +19,15 @@ Angular2 Google Charts Example
     })
     export class GoogleChartComponent implements OnInit {
       public _element:any;
+      
       @Input('chartType') public chartType:string;
       @Input('chartOptions') public chartOptions: Object;
       @Input('chartData') public chartData: Object;
+      
       constructor(public element: ElementRef) {
         this._element = this.element.nativeElement;
       }
+      
       ngOnInit() {
         setTimeout(() =>{
           google.charts.load('current', {'packages':['corechart']});
@@ -34,6 +37,11 @@ Angular2 Google Charts Example
           },1000
         );
       }
+      
+      ngOnChanges(changes) { 
+        this.drawGraph(this.chartOptions,this.chartType,this.chartData,this._element); 
+      }
+      
       drawGraph (chartOptions,chartType,chartData,ele) {
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
@@ -47,7 +55,9 @@ Angular2 Google Charts Example
           wrapper.draw();
         }
       }
+      
     }
+    
 ### 4. In the component you want to include a chart do the following
     import {Component, OnInit } from '@angular/core';
     import {GoogleChartComponent} from '../google-chart/google-chart.component';
