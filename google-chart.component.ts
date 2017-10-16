@@ -5,19 +5,27 @@ declare var googleLoaded:any;
   selector: '[GoogleChart]'
 })
 export class GoogleChartComponent implements OnInit {
+  
   public _element:any;
+  
   @Input('chartType') public chartType:string;
   @Input('chartOptions') public chartOptions: Object;
   @Input('chartData') public chartData: Object;
+  
   constructor(public element: ElementRef) {
     this._element = this.element.nativeElement;
   }
+  
   ngOnInit() {
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(this.drawGraph);
   }
+  
+  ngOnChanges(changes) { 
+    this.drawGraph(this.chartOptions,this.chartType,this.chartData,this._element); 
+  }
+  
   drawGraph = () => {
-    
     function drawChart() {
       var wrapper;
       wrapper = new google.visualization.ChartWrapper({
@@ -29,4 +37,5 @@ export class GoogleChartComponent implements OnInit {
       wrapper.draw();
     }
   }
+  
 }
